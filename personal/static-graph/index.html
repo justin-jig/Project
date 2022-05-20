@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Jeong ingeun Graph Data</title>
+    <link rel="stylesheet" type="text/css" href="./style/initialize.css">
+    <link rel="stylesheet" type="text/css" href="./style/index.css">
+</head>
+
+<body>
+    <div class="warp" id="warp">
+    
+        <h1 class="project-title"> 2021년 javascript frameWork 선호도 </h1>
+
+        <div class="project-box">
+            <div class="graph-box" id= "graph-box">
+                <svg width="100%" height="100%" viewBox="0 0 40 40" id="circle-svg">
+                    <circle
+                        r="10"
+                        cx="20" id="circle-back"
+                        cy="20"
+                        fill="transparent"
+                        stroke="#eee"
+                        stroke-width="20"
+                        stroke-dasharray="calc(100 * calc(2*3.14*10) / 100) calc(2*3.14*10)"
+                        transform="rotate(-90)  translate(-40)"
+                    />
+    
+                    <g id="circle-svg-group"></g>
+                </svg>
+    
+            </div>
+        
+            <div id="info-list" class="info-list"></div>
+      
+        </div>
+    </div>
+    <script src="./js/cricle-chart.js" type="text/javascript"></script>
+</body>
+
+</html>
