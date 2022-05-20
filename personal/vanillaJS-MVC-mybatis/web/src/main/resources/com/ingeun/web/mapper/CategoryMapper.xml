@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.ingeun.web.mapper.CategoryMapper">
+
+<resultMap id="categoryMap" type="com.ingeun.web.domain.CategoryDTO">
+    <id property="categoryId" column="CATEGORY_ID"/>
+    <result property="categoryName" column="CATEGORY_NAME"/>
+    <result property="description" column="DESCRIPTION"/>
+</resultMap>
+
+<insert id="InsertCategory" parameterType="com.ingeun.web.domain.CategoryDTO">
+    insert into CATEGORIES (CATEGORY_ID,CATEGORY_NAME,DESCRIPTION)
+    values (#{category_id},#{category_name},#{description})
+</insert>
+
+
+<select id="selectCategolise" resultMap="categoryMap">
+    select * from CATEGORIES 
+</select>
+
+<select id="selectCategoliseByOtion" resultMap="categoryMap"
+                                    parameterType="com.ingeun.web.domain.CategoryDTO">
+    select * from CATEGORIES where CATEGORY_NAME = #{categoryName}
+</select>
+<select id="selectcategoryBycategoryID" resultMap="categoryMap" parameterType="string" >
+    select * from CATEGORIES where CATEGORY_ID = #{value}
+</select>
+
+
+<update id="updateCategory" parameterType="com.ingeun.web.domain.CategoryDTO">
+    CATEGORY_NAME = #{categoryName},
+    DESCRIPTION = #{description}
+    where CATEGORY_ID = #{category_id}
+</update>
+
+<delete  id="deleteCategory"  parameterType="com.ingeun.web.domain.CategoryDTO">
+    delete from CATEGORIES where category_id = #{category_id}
+</delete>
+
+
+</mapper>

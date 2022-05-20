@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ingeun.web.mapper.CustomerMapper">
+    <resultMap id="customerMap" type="com.ingeun.web.domain.CustomerDTO">
+        <id property="customerId" column="CUSTOMER_ID"/>
+        <result property="customerName" column="CUSTOMER_NAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="ssn" column="SSN"/>
+        <result property="phone" column="PHONE"/>
+        <result property="city" column="CITY"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="postalcode" column="ADDRESS"/>
+    </resultMap>  
+  <insert id="insertCustomer" parameterType="com.ingeun.web.domain.CustomerDTO">
+    insert into CUSTOMERS (CUSTOMER_ID, CUSTOMER_NAME, PASSWORD, SSN, PHONE, CITY, ADDRESS, POSTALCODE) 
+    values (#{customerId}, #{customerName}, #{password}, #{ssn}, #{phone}, #{city}, #{address}, #{postalcode})
+  </insert>
+  <!-- select * from CUSTOMERS   이렇게하면 뻗는다.-->
+  <select id="selectCustomers" resultMap="customerMap"
+        parameterType="com.ingeun.web.common.utill.PageProxy">
+         SELECT @ROWNUM:=@ROWNUM+1 AS rownum,
+                C.*
+        FROM CUSTOMERS C, (SELECT @ROWNUM:=0)TMP
+        ORDER BY rownum DESC
+        LIMIT #{startRow}, #{pageSize}
+    </select>
+  <select id="selectCustomersByOption" resultMap="customerMap" 
+    parameterType="com.ingeun.web.domain.CustomerDTO">
+    select * from CUSTOMERS where CUSTOMER_NAME = #{customerName}
+  </select>
+  <select id="selectCustomerByCustomerId" resultMap="customerMap" 
+    parameterType="string">
+    select * from CUSTOMERS where CUSTOMER_ID = #{customerId}
+  </select>
+   <select id="selectCount" resultType="int">
+    SELECT COUNT(*) AS COUNT FROM USER
+  </select>
+
+    <select id="login" resultMap="customerMap" parameterType="com.ingeun.web.domain.CustomerDTO">
+     SELECT * FROM CUSTOMERS where CUSTOMER_ID LIKE #{customerId} and PASSWORD LIKE #{password}
+    </select>
+  <update id="updateCustomer" parameterType="com.ingeun.web.domain.CustomerDTO">
+    update CUSTOMERS set 
+        CUSTOMER_ID = #{customerId},
+        CUSTOMER_NAME = #{customerName},
+        PASSWORD = #{password},
+        SSN = #{ssn},
+        PHONE = #{phone},
+        CITY = #{city},
+        ADDRESS = #{address},
+        POSTALCODE = #{postalcode} where CUSTOMER_ID = #{customerId}
+  </update>
+  <delete id="deleteCustomer" parameterType="com.ingeun.web.domain.CustomerDTO">
+    delete from CUSTOMERS where CUSTOMER_ID = #{customerId}
+  </delete>
+</mapper>

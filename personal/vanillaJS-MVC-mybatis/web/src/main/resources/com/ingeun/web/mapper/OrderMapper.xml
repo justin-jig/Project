@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ingeun.web.mapper.OrderMapper">
+    <resultMap id="orderMap" type="com.ingeun.web.domain.OrderDTO">
+        <id property="orderId" column="ORDER_ID"/>
+        <result property="customerId" column="CUSTOMER_ID"/>
+        <result property="employeeId" column="EMPLOYEE_ID"/>
+        <result property="shipperId" column="SHIPPER_ID"/>   
+    </resultMap>
+  <insert id="insertOrder" parameterType="com.ingeun.web.domain.OrderDTO">
+    insert into ORDERS (ORDER_ID,CUSTOMER_ID, EMPLOYEE_ID, SHIPPER_ID) 
+    values (#{orderId},#{customerId}, #{employeeId}, #{shipperId})
+  </insert>
+  <select id="selectOrders" resultMap="orderMap">
+    select * from ORDERS
+  </select>
+  <select id="selectOrdersByOption" resultMap="orderMap" 
+    parameterType="com.ingeun.web.domain.OrderDTO">
+    select * from ORDERS where CUSTOMER_ID = #{customerId}
+  </select>
+  <select id="selectOrderById" resultMap="orderMap" 
+    parameterType="string">
+    select * from ORDERS where ORDER_ID = #{value}
+  </select>
+  <update id="updateOrder" parameterType="com.ingeun.web.domain.OrderDTO">
+    update ORDERS set CUSTOMER_ID = #{customerId}, 
+        EMPLOYEE_ID = #{employeeId}, 
+        SHIPPER_ID = #{shipperId}
+    where ORDER_ID = #{orderId}
+  </update>
+  <delete id="deleteOrder" parameterType="com.ingeun.web.domain.OrderDTO">
+    delete from ORDERS where ORDER_ID = #{orderId}
+  </delete>
+</mapper>

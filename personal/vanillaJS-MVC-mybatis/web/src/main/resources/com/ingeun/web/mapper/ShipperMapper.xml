@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ingeun.web.mapper.ShipperMapper">
+    <resultMap id="shipperMap" type="com.ingeun.web.domain.ShipperDTO">
+        <id property="shipperId" column="SHIPPER_ID"/>
+        <result property="shipperName" column="SHIPPER_NAME"/>
+        <result property="phone" column="PHONE"/>    
+    </resultMap> 
+  <insert id="insertShipper" parameterType="com.ingeun.web.domain.ShipperDTO">
+    insert into SHIPPERS (SHIPPER_ID, SHIPPER_NAME, PHONE) 
+    values (#{shipperId}, #{shipperName}, #{phone})
+  </insert>
+  <select id="selectShippers" resultMap="shipperMap">
+    select * from SHIPPERS
+  </select>
+  <select id="selectShippersByOption" resultMap="shipperMap" 
+    parameterType="com.ingeun.web.domain.ShipperDTO">
+    select * from SHIPPERS where SHIPPER_NAME = #{shipperName}
+  </select>
+  <select id="selectShipperById" resultMap="shipperMap" 
+    parameterType="string">
+    select * from SHIPPERS where SHIPPER_ID = #{value}
+  </select>
+  <update id="updateShipper" parameterType="com.ingeun.web.domain.ShipperDTO">
+    update SHIPPERS set SHIPPER_NAME = #{shipperName}, 
+        PHONE = #{phone} 
+    where SHIPPER_ID = #{shipperId}
+  </update>
+  <delete id="deleteShipper" parameterType="com.ingeun.web.domain.ShipperDTO">
+    delete from SHIPPERS where SHIPPER_ID = #{shipperId}
+  </delete>
+  </mapper>
