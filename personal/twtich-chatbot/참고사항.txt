@@ -1,0 +1,7 @@
+
+
+1. useToken
+트위치 계정 로그인해서 https://twitchapps.com/tmi/ 접속 후 토큰 받으면 됩니다.
+
+2. 채널
+채널명을 입력해야 합니다.
