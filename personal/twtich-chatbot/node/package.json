@@ -1,0 +1,46 @@
+{
+  "name": "twitch-chatbot",
+  "version": "0.0.1",
+  "description": "A simple app chatbot example. Using the command !echo will simply repeat the message.",
+  "main": "bot.js",
+
+  "bin": {
+    "app": "./bin/start.js"
+  },
+
+  "scripts": {
+    "start": "node ./bin/start",
+    "build": "pkg . "
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "2.8.5",
+    "express": "~4.16.1",
+    "iconv-lite": "0.6.3",
+    "moment": "^2.29.3",
+    "moment-timezone": "^0.5.34",
+    "node-gyp": "8.2.0",
+    "open": "8.3.0",
+    "pkg": "^5.5.2",
+    "prop-types": "^15.8.1",
+    "rebuild": "0.1.2",
+    "tmi.js": "^1.8.5"
+  },
+  "license": "MIT",
+  "keywords": [
+    "twitch",
+    "chatbots",
+    "irc"
+  ],
+  "pkg": {
+    "assets": [
+      "node_modules/**/**/**/*",
+      "modules/**/**/**/*",
+      "bin/**/*"
+    ],
+    "outputPath": "dist",
+    "targets": [
+      "node14-win-x64"
+    ]
+  }
+}
