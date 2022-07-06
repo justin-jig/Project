@@ -17,13 +17,12 @@ class _twtichChatbot {
     }
 
     async optionSetting (data, phrases) { // user setting
-      
         
         this.opts.identity.username = data.username;
         this.opts.identity.password = data.password;
         this.opts.channels = data.channels;
         this.phrases = [...phrases];
-        await this.connectChatbot();
+        return await this.connectChatbot();
         
     }
 
@@ -35,17 +34,20 @@ class _twtichChatbot {
         this.client.on('disconnected', (text) => {
             twtichChatbot.connect = 'disconnect';
         })
+        
+        this.client.on('connectFailed', function(error) {
+            console.log('Connect Error: ' + error.toString());
+        });
 
         try {
 
             await this.client.connect();
-
+            return await this.sendExecute();
+            
         } catch (e) {
 
-            return;
+            return 'error';
         }
-
-       await this.sendExecute();
         
     }
 
@@ -73,36 +75,30 @@ class _twtichChatbot {
         let staticDataIndex = await  this.phrases.length + 1;
         let msgRandom =  await Math.floor(Math.random() * (staticDataIndex - 1));
 
-        try {
 
-            let sendSetTime = setTimeout(() => {
-                
-            
-                this.opts.channels.forEach((element) => {
+            let state = '';
+       
+            try {
 
-                    try {
+                let sendSetTime = await setTimeout( async () => {
 
-                        if (element != "" || element != undefined) {
+                    if (this.opts.channels[0] != "" || this.opts.channels[0] != undefined) {
 
-                            this.client.say(element, this.phrases[msgRandom] || "  ");
-                        }
-
-                    } catch (e) {
-
-                        console.log('Tmi module send error::', e)
+                        this.client.say(this.opts.channels[0], this.phrases[msgRandom] || "  ");
+                        clearTimeout(sendSetTime);
                     }
-                })
 
-                clearTimeout(sendSetTime);
+                },[1000])
 
-            },[3000])
-          
-        } catch (e) {
+                state = await 'suc'
 
-            this.connect = "error";
-            return 'error'
+            } catch (e) {
 
-        }     
+                console.log('Tmi module send error::', e)
+                this.connect = "error";
+                return 'error'
+            }
+            return state
     }
 }
 

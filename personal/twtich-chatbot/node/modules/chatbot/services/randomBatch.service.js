@@ -16,20 +16,26 @@ class _randomChatbot {
         let index =  await idxRandom-1;
 
         let data = {    
-            username : this.userConfig.userInfo[index].userName,
-            password : this.userConfig.userInfo[index].userChatToken,
-            channels : this.userConfig.chennel,
-            time : 2000
+            username : '',
+            password : '',
+            channels : [],
+            time : 0
         }
 
+        data.username = this.userConfig.userInfo[index].userName;
+        data.password = this.userConfig.userInfo[index].userChatToken;
+        data.channels = this.userConfig.chennel;
+        data.time =  await Math.floor( Math.random() * (this.userConfig.timeSetting.max - this.userConfig.timeSetting.min) + this.userConfig.timeSetting.min);
+
         this.beforeIndex = idxRandom;
+        
+        console.log(`${this.userConfig.chatBotId} chatbot wait time :`, Math.floor (data.time/1000) + '초');
 
         return data;
   
     }
 
     async randomChatBatch() {
-
 
         let currentTime = moment().format("YYYY-MM-DD HH:mm:ss"); // 현재 시간
         let sendPossibleIndexList = []; // send 가능한 user this.userConfig.userInfo index list

@@ -25,27 +25,16 @@ async function startRandomBot (data) { // 처음 chatbot 실행
 
         phrases = phrases.concat(staticData.phrases);
     }
-  
 
     let reciveData = await randomChatbot.setUserConfig(data);
-                     await twtichChatbot.optionSetting(reciveData, phrases);
 
-    if (twtichChatbot.connect === 'disconnect' || twtichChatbot.connect === 'error') {
+    let connectChatbot = setTimeout(() => {
 
-        console.log(reciveData.username,reciveData.password, 'data가 문제');
-
-       let randomBotTime = setTimeout(() => {
-    
-            twtichChatbot.discconnectChatbot();
-            reRandomBot();
-            clearTimeout(randomBotTime);
-
-        },[8000])
-
-    } else {
-
-        twtichChatbot.client.on('message', onReceiveMessage);
-    }
+        connect(reciveData);
+        clearTimeout(connectChatbot);
+        
+    },[reciveData.time])
+  
 }
 
 async function reRandomBot () { // re chatbot 실행 
@@ -58,29 +47,114 @@ async function reRandomBot () { // re chatbot 실행
         clearTimeout(reRandomBotTime);
 
     },[reciveData.time])
+
 }
  
+
+async function connect (reciveData) { // re chatbot 연결 
+
+    let botTmiConnect ;
+
+    try {
+
+       botTmiConnect =  await twtichChatbot.optionSetting(reciveData, phrases);
+  
+    } catch(e) {
+
+        let randomBotTime = setTimeout(() => {
+    
+            if( twtichChatbot.connect === 'error' ||  twtichChatbot.connect === 'connect') twtichChatbot.discconnectChatbot();
+            reRandomBot();
+            clearTimeout(randomBotTime);
+
+        },[1000])
+    }
+
+    if ( botTmiConnect === 'suc') {
+
+        if (twtichChatbot.connect === 'disconnect' || twtichChatbot.connect === 'error') {
+
+            console.log(reciveData.username,reciveData.password, 'data가 문제');
+    
+            if( twtichChatbot.connect === 'error' ||  twtichChatbot.connect === 'connect') {
+
+                let reRandomBotTime  = setTimeout(() => { 
+    
+                    twtichChatbot.discconnectChatbot();
+                    clearTimeout(reRandomBotTime);
+
+                },[1000])
+    
+            }
+            reRandomBot();
+    
+    
+      
+        } else {
+
+            twtichChatbot.client.on('message', onReceiveMessage);
+
+        } 
+
+    } else {
+
+        if( twtichChatbot.connect === 'error' ||  twtichChatbot.connect === 'connect') {
+
+            let reRandomBotTime  = setTimeout(() => { 
+
+                twtichChatbot.discconnectChatbot();
+                clearTimeout(reRandomBotTime);
+
+            },[1000])
+
+        }
+        reRandomBot();
+
+
+    }
+
+}
+
 async function reConnect (reciveData) { // re chatbot 연결 
-    
-    await twtichChatbot.optionSetting(reciveData, phrases);
-    
+
+
+    let botTmiConnect ;
+
+    try {
+
+      botTmiConnect =  await twtichChatbot.optionSetting(reciveData, phrases);
+   
+    } catch(e) {
+
+        if( twtichChatbot.connect === 'error' ||  twtichChatbot.connect === 'connect') twtichChatbot.discconnectChatbot();
+        reRandomBot();
+    }
+
     if (twtichChatbot.connect === 'disconnect' || twtichChatbot.connect === 'error') {
 
         console.log(reciveData.username,reciveData.password, 'data가 문제');
 
-        let reConnectTime = setTimeout(() => {
+      
+        if( twtichChatbot.connect === 'error' ||  twtichChatbot.connect === 'connect') {
 
-            twtichChatbot.discconnectChatbot();
-            reRandomBot();
-            clearTimeout(reConnectTime);
+            let reRandomBotTime  = setTimeout(() => { 
 
-        },[2000])
-        
-        
+                twtichChatbot.discconnectChatbot();
+                clearTimeout(reRandomBotTime);
+
+            },[1000])
+
+        }
+
+        reRandomBot();
+
+  
     } else {
 
         twtichChatbot.client.on('message', onReceiveMessage);
-    }
+
+    } 
+
 }
 
 function onReceiveMessage (target, context, msg, self) {  // 메세지 받음
@@ -92,17 +166,12 @@ function onReceiveMessage (target, context, msg, self) {  // 메세지 받음
         try {
 
             console.log(`${randomChatbot.userConfig.chatBotId} chat bot send ${twtichChatbot.opts.identity.username || ''} : ${msg}`);
-            let onReceiveMessageTime = setTimeout(() => {
-           
-                twtichChatbot.discconnectChatbot();
-                reRandomBot();
-                clearTimeout(onReceiveMessageTime);
+            twtichChatbot.discconnectChatbot();
+            reRandomBot();
     
-            },[8000])
-
         } catch (e) {
 
-            console.log('error')
+            console.log('error', e)
         }
     } 
 
